@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h2>Simple WebSocket Test</h2>
+    <input type="text" id="messageBox" placeholder="Type a message..." />
+    <button onclick="sendMessage()">Send</button>
+    <div id="messages"></div>
+
+    <script>
+        // Connect to the server (use 'ws' protocol instead of 'http')
+        const socket = new WebSocket('ws://localhost:3000');
+
+        // Connection opened
+        socket.onopen = () => {
+            console.log('Connected to the server');
+        };
+
+        // Listen for messages from server
+        socket.onmessage = (event) => {
+            const el = document.createElement('p');
+            el.textContent = event.data;
+            document.getElementById('messages').appendChild(el);
+        };
+
+        function sendMessage() {
+            const input = document.getElementById('messageBox');
+            socket.send(input.value);
+            input.value = '';
+        }
+    </script>
+</body>
+</html>
